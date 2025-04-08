@@ -15,7 +15,7 @@
 		D66A60802D9DB36F0018CC9A /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A607F2D9DB36F0018CC9A /* ExerciseModel.swift */; };
 		D66A60822D9DB4990018CC9A /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A60812D9DB4990018CC9A /* AuthViewModel.swift */; };
 		D66A60842D9DB4AC0018CC9A /* ExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A60832D9DB4AC0018CC9A /* ExerciseViewModel.swift */; };
-		D66A60862D9DB4B70018CC9A /* ScoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A60852D9DB4B70018CC9A /* ScoreViewModel.swift */; };
+		D66A60862D9DB4B70018CC9A /* HighscoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A60852D9DB4B70018CC9A /* HighscoreViewModel.swift */; };
 		D66A60882D9DB4C80018CC9A /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A60872D9DB4C80018CC9A /* SignupView.swift */; };
 		D66A608A2D9DB4D30018CC9A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A60892D9DB4D30018CC9A /* LoginView.swift */; };
 		D66A608C2D9DB4DF0018CC9A /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A608B2D9DB4DF0018CC9A /* DashboardView.swift */; };
@@ -28,6 +28,7 @@
 		D66A609B2DA4F8C40018CC9A /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = D66A609A2DA4F8C40018CC9A /* FirebaseCore */; };
 		D66A609D2DA4F8C40018CC9A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D66A609C2DA4F8C40018CC9A /* FirebaseFirestore */; };
 		D66A60A02DA510BA0018CC9A /* AppleSignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A609F2DA510BA0018CC9A /* AppleSignInButton.swift */; };
+		D66A60A22DA56AB90018CC9A /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A60A12DA56AB90018CC9A /* DashboardViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +42,7 @@
 		D66A607F2D9DB36F0018CC9A /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		D66A60812D9DB4990018CC9A /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		D66A60832D9DB4AC0018CC9A /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
-		D66A60852D9DB4B70018CC9A /* ScoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreViewModel.swift; sourceTree = "<group>"; };
+		D66A60852D9DB4B70018CC9A /* HighscoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighscoreViewModel.swift; sourceTree = "<group>"; };
 		D66A60872D9DB4C80018CC9A /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		D66A60892D9DB4D30018CC9A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		D66A608B2D9DB4DF0018CC9A /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -51,6 +52,7 @@
 		D66A60932D9DB50D0018CC9A /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		D66A60952DA4F7DE0018CC9A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D66A609F2DA510BA0018CC9A /* AppleSignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInButton.swift; sourceTree = "<group>"; };
+		D66A60A12DA56AB90018CC9A /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +124,8 @@
 			children = (
 				D66A60812D9DB4990018CC9A /* AuthViewModel.swift */,
 				D66A60832D9DB4AC0018CC9A /* ExerciseViewModel.swift */,
-				D66A60852D9DB4B70018CC9A /* ScoreViewModel.swift */,
+				D66A60852D9DB4B70018CC9A /* HighscoreViewModel.swift */,
+				D66A60A12DA56AB90018CC9A /* DashboardViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				D66A60822D9DB4990018CC9A /* AuthViewModel.swift in Sources */,
 				D66A606D2D9DA6B90018CC9A /* ContentView.swift in Sources */,
 				D66A608A2D9DB4D30018CC9A /* LoginView.swift in Sources */,
+				D66A60A22DA56AB90018CC9A /* DashboardViewModel.swift in Sources */,
 				D66A607E2D9DB3610018CC9A /* UserModel.swift in Sources */,
 				D66A60902D9DB4F60018CC9A /* HighscoreView.swift in Sources */,
 				D66A60882D9DB4C80018CC9A /* SignupView.swift in Sources */,
@@ -250,7 +254,7 @@
 				D66A608E2D9DB4EB0018CC9A /* ExerciseView.swift in Sources */,
 				D66A608C2D9DB4DF0018CC9A /* DashboardView.swift in Sources */,
 				D66A60802D9DB36F0018CC9A /* ExerciseModel.swift in Sources */,
-				D66A60862D9DB4B70018CC9A /* ScoreViewModel.swift in Sources */,
+				D66A60862D9DB4B70018CC9A /* HighscoreViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
