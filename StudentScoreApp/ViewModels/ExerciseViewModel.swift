@@ -6,17 +6,48 @@
 //
 
 import Foundation
+import FirebaseFirestore
+import FirebaseAuth
+
+struct QuizQuestion {
+    let text: String
+    let choices: [String]
+    let answer: String
+}
 
 class ExerciseViewModel: ObservableObject {
+    @Published var questions: [QuizQuestion] = []
     @Published var currentIndex = 0
     @Published var selectedAnswer: String? = nil
     @Published var score = 0
     @Published var showResult = false
-
-    let questions: [QuizQuestion] = SampleQuizData.questions
+    @Published var isLoading = true
 
     var currentQuestion: QuizQuestion {
         questions[currentIndex]
+    }
+
+    func loadQuestions() {
+        let db = Firestore.firestore()
+        db.collection("questions").getDocuments { snapshot, error in
+            DispatchQueue.main.async {
+                if let documents = snapshot?.documents {
+                    self.questions = documents.compactMap { doc in
+                        let data = doc.data()
+                        guard let text = data["text"] as? String,
+                              let choices = data["choices"] as? [String],
+                              let answer = data["answer"] as? String else {
+                            return nil
+                        }
+                        return QuizQuestion(text: text, choices: choices, answer: answer)
+                    }
+                    self.isLoading = false
+                } else {
+                    print("❌ Failed to load questions: \(error?.localizedDescription ?? "Unknown error")")
+                    self.isLoading = false
+                }
+            }
+        }
     }
 
     func selectAnswer(_ answer: String) {
@@ -32,30 +63,29 @@ class ExerciseViewModel: ObservableObject {
             currentIndex += 1
             selectedAnswer = nil
         } else {
+            saveScoreToFirestore()
             showResult = true
         }
     }
-}
 
-// Question Model
-struct QuizQuestion {
-    let text: String
-    let choices: [String]
-    let answer: String
-}
-
-// Sample Data
-struct SampleQuizData {
-    static let questions: [QuizQuestion] = [
-        QuizQuestion(text: "I saw ___ owl in the tree.", choices: ["a", "an", "the", "no article"], answer: "an"),
-        QuizQuestion(text: "He bought ___ book yesterday.", choices: ["a", "an", "the", "no article"], answer: "a"),
-        QuizQuestion(text: "___ sun rises in the east.", choices: ["a", "an", "the", "no article"], answer: "the"),
-        QuizQuestion(text: "She is ___ honest person.", choices: ["a", "an", "the", "no article"], answer: "an"),
-        QuizQuestion(text: "They went to ___ beach.", choices: ["a", "an", "the", "no article"], answer: "the"),
-        QuizQuestion(text: "___ water is essential for life.", choices: ["a", "an", "the", "no article"], answer: "no article"),
-        QuizQuestion(text: "He is ___ university student.", choices: ["a", "an", "the", "no article"], answer: "a"),
-        QuizQuestion(text: "Do you want ___ apple?", choices: ["a", "an", "the", "no article"], answer: "an"),
-        QuizQuestion(text: "I found ___ wallet on the ground.", choices: ["a", "an", "the", "no article"], answer: "a"),
-        QuizQuestion(text: "___ Earth orbits the Sun.", choices: ["a", "an", "the", "no article"], answer: "the")
-    ]
+    func saveScoreToFirestore() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let userRef = Firestore.firestore().collection("users").document(uid)
+        userRef.updateData(["score": score]) { error in
+            if let error = error {
+                print("❌ Error saving score: \(error.localizedDescription)")
+            } else {
+                print("✅ Score saved")
+            }
+        }
+    }
+    
+    func reset() {
+        currentIndex = 0
+        selectedAnswer = nil
+        score = 0
+        showResult = false
+        isLoading = true
+        questions = []
+    }
 }

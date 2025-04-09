@@ -6,18 +6,15 @@
 //
 
 import SwiftUI
-import FirebaseAuth
-import FirebaseFirestore
 
 struct ProfileView: View {
-    @State private var name: String = ""
-    @State private var email: String = ""
-    @State private var isLoading = true
+    @EnvironmentObject var authVM: AuthViewModel
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationView {
             VStack(spacing: 24) {
-                if isLoading {
+                if authVM.isProfileLoading {
                     ProgressView("Loading profile...")
                 } else {
                     Image(systemName: "person.circle.fill")
@@ -25,12 +22,24 @@ struct ProfileView: View {
                         .frame(width: 100, height: 100)
                         .foregroundColor(.gray)
 
-                    Text(name)
+                    Text(authVM.profileName)
                         .font(.title2)
                         .bold()
 
-                    Text(email)
+                    Text(authVM.profileEmail)
                         .foregroundColor(.gray)
+
+                    Button("Log Out") {
+                        authVM.signOut()
+                        dismiss()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding(.top, 40)
+                    .padding(.horizontal)
 
                     Spacer()
                 }
@@ -38,24 +47,14 @@ struct ProfileView: View {
             .padding()
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear(perform: loadUserProfile)
-        }
-    }
-
-    func loadUserProfile() {
-        guard let user = Auth.auth().currentUser else { return }
-        self.email = user.email ?? ""
-
-        let docRef = Firestore.firestore().collection("users").document(user.uid)
-        docRef.getDocument { snapshot, error in
-            if let data = snapshot?.data(), let name = data["name"] as? String {
-                self.name = name
+            .onAppear {
+                authVM.loadUserProfile()
             }
-            self.isLoading = false
         }
     }
 }
 
 #Preview {
-    ProfileView()
+    ProfileView().environmentObject(AuthViewModel())
 }
+

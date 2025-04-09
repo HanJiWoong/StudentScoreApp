@@ -53,7 +53,7 @@ struct SignupView: View {
             .padding(.top, 32)
 
             Button {
-                authVM.signUp(email: email, password: password) { success in
+                authVM.signUp(name: name, email: email, password: password) { success in
                     if success {
                         presentationMode.wrappedValue.dismiss()
                     }

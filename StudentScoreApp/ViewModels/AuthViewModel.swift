@@ -14,8 +14,14 @@ import FirebaseFirestore
 
 class AuthViewModel: NSObject, ObservableObject {
     @Published var isSignedIn = false
+    @Published var isLoading = false
     @Published var errorMessage: String?
 
+    @Published var profileName: String = ""
+    @Published var profileEmail: String = ""
+    @Published var isProfileLoading: Bool = true
+
+    
     private var currentNonce: String?
     private let db = Firestore.firestore()
     
@@ -28,15 +34,20 @@ class AuthViewModel: NSObject, ObservableObject {
         isSignedIn = Auth.auth().currentUser != nil
     }
     
-    func signUp(email: String, password: String, completion: @escaping (Bool) -> Void) {
+    func signUp(name: String, email: String, password: String, completion: @escaping (Bool) -> Void) {
+        isLoading = true
+        errorMessage = ""
+
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
                 if let error = error {
                     self.errorMessage = error.localizedDescription
+                    self.isLoading = false
                     completion(false)
                 } else if let user = result?.user {
                     self.isSignedIn = true
-                    self.createUserDocument(uid: user.uid, email: user.email ?? "", name: "")
+                    self.createUserDocument(uid: user.uid, email: email, name: name)
+                    self.isLoading = false
                     completion(true)
                 }
             }
@@ -61,6 +72,25 @@ class AuthViewModel: NSObject, ObservableObject {
             isSignedIn = false
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+    
+    func loadUserProfile() {
+        guard let user = Auth.auth().currentUser else {
+            self.isProfileLoading = false
+            return
+        }
+
+        self.profileEmail = user.email ?? ""
+
+        let docRef = Firestore.firestore().collection("users").document(user.uid)
+        docRef.getDocument { snapshot, error in
+            DispatchQueue.main.async {
+                if let data = snapshot?.data(), let name = data["name"] as? String {
+                    self.profileName = name
+                }
+                self.isProfileLoading = false
+            }
         }
     }
     
@@ -100,8 +130,10 @@ class AuthViewModel: NSObject, ObservableObject {
                         // Save to Firestore only if new user
                         self.db.collection("users").document(user.uid).getDocument { document, error in
                             if let document = document, !document.exists {
-                                let name = appleIDCredential.fullName?.givenName ?? ""
-                                self.createUserDocument(uid: user.uid, email: user.email ?? "", name: name)
+                                let rawName = appleIDCredential.fullName?.givenName ?? ""
+                                let finalName = rawName.isEmpty ? "User" : rawName
+
+                                self.createUserDocument(uid: user.uid, email: user.email ?? "", name: finalName)
                             }
                         }
                         completion(true)

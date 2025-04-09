@@ -12,7 +12,7 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var goToSignUp = false
-
+    
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 12) {
@@ -21,7 +21,7 @@ struct LoginView: View {
                     .font(.largeTitle.bold())
                     .padding(.top, 32)
                     .padding(.horizontal, 24)
-
+                
                 // 입력 박스
                 VStack(spacing: 0) {
                     VStack(spacing: 8) {
@@ -33,7 +33,7 @@ struct LoginView: View {
                         Divider()
                             .padding(.horizontal, 16)
                     }
-
+                    
                     VStack(spacing: 8) {
                         SecureField("Password", text: $password)
                             .padding(.vertical, 12)
@@ -46,7 +46,7 @@ struct LoginView: View {
                 .cornerRadius(10)
                 .padding(.horizontal, 24)
                 .padding(.top, 32)
-
+                
                 // Sign up 텍스트
                 Button {
                     goToSignUp = true
@@ -57,7 +57,7 @@ struct LoginView: View {
                         .padding(.horizontal, 24)
                 }
                 .padding(.top, 48)
-
+                
                 // 로그인 버튼
                 Button {
                     authVM.signIn(email: email, password: password) { _ in }
@@ -77,9 +77,9 @@ struct LoginView: View {
                     .onTapGesture {
                         authVM.startSignInWithAppleFlow()
                     }
-
+                
                 Spacer()
-
+                
                 // SignupView로 이동
                 NavigationLink(destination: SignupView(authVM: authVM), isActive: $goToSignUp) {
                     EmptyView()
@@ -87,10 +87,9 @@ struct LoginView: View {
             }
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
             .navigationBarHidden(true)
-        }
-        // DashboardView로 이동
+        }        
         .fullScreenCover(isPresented: $authVM.isSignedIn) {
-            DashboardView()
+            DashboardView().environmentObject(authVM)
         }
     }
 }
